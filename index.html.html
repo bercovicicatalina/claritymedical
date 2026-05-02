@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarity Medical · Fiecare minut al tău aparține pacienților tăi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#2563a8;--blue-light:#e8f0fb;--blue-mid:#4a7fc1;
+  --green:#2d9b6f;--green-light:#e6f7f1;
+  --purple:#6b4fa0;--purple-light:#f0ebfa;
+  --slate:#1e2d3d;--slate-mid:#4a5e72;
+  --bg:#fafaf8;--white:#fff;--cream:#f5f3ef;--border:#e8e4de;
+  --text:#1e2d3d;--text-mid:#4a5e72;--text-light:#8a9baa;
+  --red:#c0392b;--red-border:#f5c5be;
+  --orange:#d97706;--orange-border:#fad6a0;
+  --shadow:0 2px 16px rgba(37,99,168,0.08);
+  --shadow-lg:0 8px 40px rgba(37,99,168,0.13);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',system-ui,sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.2;color:var(--slate)}
+p{color:var(--text-mid)}
+button{cursor:pointer;font-family:'Nunito',inherit;transition:all 0.25s}
+input,textarea,select{font-family:'Nunito',inherit}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--blue-light)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;background:#ffffff;border-bottom:1px solid var(--border);transition:all 0.35s}
+#nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+.nav-logo{display:flex;align-items:center;gap:9px}
+.nav-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;color:var(--slate)}
+.nav-name span{color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:13px;color:var(--text-mid);font-weight:500;transition:color 0.2s;white-space:nowrap}
+.nav-links a:hover{color:var(--blue)}
+.btn-o{background:transparent;border:1.5px solid var(--blue);color:var(--blue);padding:8px 16px;font-size:13px;font-weight:600;border-radius:8px}
+.btn-o:hover{background:var(--blue-light)}
+.btn-p{background:var(--blue);border:none;color:#fff;padding:9px 18px;font-size:13px;font-weight:600;border-radius:8px;box-shadow:0 2px 8px rgba(37,99,168,0.25)}
+.btn-p:hover{background:var(--blue-mid);transform:translateY(-1px)}
+
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
+
+/* ANIMATED TITLES */
+.anim-title{position:relative;display:inline-block}
+.anim-title::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:1px;transition:width 0.7s ease}
+.anim-title.lit::after{width:100%}
+.hl{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:100px 48px 80px;position:relative;overflow:hidden;background:#ffffff}
+.hblob{position:absolute;border-radius:50%;pointer-events:none}
+.hb1{top:-10%;right:-5%;width:55vw;height:55vw;background:radial-gradient(circle,rgba(107,79,160,0.07) 0%,transparent 70%)}
+.hb2{bottom:-5%;left:-8%;width:45vw;height:45vw;background:radial-gradient(circle,rgba(45,155,111,0.07) 0%,transparent 70%)}
+.hb3{top:30%;left:35%;width:30vw;height:30vw;background:radial-gradient(circle,rgba(37,99,168,0.05) 0%,transparent 70%)}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative;z-index:1;width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:22px}
+.hero-h1{font-size:clamp(30px,3.8vw,50px);font-weight:500;margin-bottom:8px;line-height:1.15}
+.hero-h1 em{font-style:italic;color:var(--blue)}
+.motto-wrap{min-height:40px;margin-bottom:18px}
+.motto-dyn{font-size:clamp(16px,2vw,22px);font-family:'Playfair Display',serif;font-style:italic;color:var(--blue);font-weight:400;opacity:0;transform:translateY(8px);transition:opacity 0.5s,transform 0.5s}
+.motto-dyn.vis{opacity:1;transform:translateY(0)}
+.hero-lead{font-size:16px;color:var(--text-mid);margin-bottom:30px;line-height:1.7;max-width:480px}
+.hero-lead strong{color:var(--slate);font-weight:600}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.btn-hp{background:var(--blue);color:#fff;border:none;padding:13px 24px;font-size:14px;font-weight:600;border-radius:10px;box-shadow:0 4px 16px rgba(37,99,168,0.28)}
+.btn-hp:hover{background:var(--blue-mid);transform:translateY(-2px)}
+.btn-hs{background:transparent;color:var(--blue);border:1.5px solid var(--blue);padding:12px 20px;font-size:14px;font-weight:600;border-radius:10px}
+.btn-hs:hover{background:var(--blue-light)}
+.trust-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.trust-lbl{font-size:12px;color:var(--text-light);font-weight:500}
+.tbadge{background:var(--white);border:1px solid var(--border);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--text-mid);display:flex;align-items:center;gap:4px}
+.hero-card{background:var(--white);border-radius:18px;padding:28px;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+.hcard-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;color:var(--slate);margin-bottom:16px}
+.jsteps{display:flex;flex-direction:column;gap:10px}
+.jstep{display:flex;align-items:flex-start;gap:11px;padding:10px;border-radius:10px;transition:background 0.2s}
+.jstep:hover{background:var(--cream)}
+.jicon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.jstep h5{font-size:13px;font-weight:700;color:var(--slate);margin-bottom:1px;font-family:'Nunito',sans-serif}
+.jstep p{font-size:12px;color:var(--text-light);line-height:1.35}
+
+/* SECTIONS */
+section{padding:88px 48px}
+.slabel{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.sbar{width:20px;height:2px;border-radius:1px}
+.stitle{font-size:clamp(24px,3.2vw,38px);font-weight:500;margin-bottom:12px}
+.ssub{font-size:16px;color:var(--text-mid);max-width:560px;line-height:1.7}
+.wrap{max-width:1060px;margin:0 auto}
+
+/* DESPRE */
+#despre{background:var(--white)}
+.despre-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:44px}
+.exp-cards{display:flex;flex-direction:column;gap:12px}
+.exp-card{background:var(--bg);border-radius:14px;padding:20px;border:1px solid var(--border);display:flex;gap:14px;align-items:flex-start;transition:all 0.25s}
+.exp-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--blue-mid)}
+.exp-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.exp-card h4{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--slate);margin-bottom:4px}
+.exp-card p{font-size:13px;color:var(--text-mid);line-height:1.55}
+.val-items{display:flex;flex-direction:column;gap:16px}
+.val-item{display:flex;gap:14px;align-items:flex-start;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.val-item:last-child{border-bottom:none;padding-bottom:0}
+.val-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;color:var(--blue);flex-shrink:0;line-height:1;width:38px}
+.val-item h5{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--slate);margin-bottom:3px}
+.val-item p{font-size:13px;color:var(--text-mid);line-height:1.55}
+
+/* CE OFERIM */
+#ce-oferim{background:var(--cream)}
+.oferim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.oferim-card{background:var(--white);border-radius:16px;padding:24px;border:1px solid var(--border);transition:all 0.3s}
+.oferim-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);border-color:transparent}
+.oferim-card:hover .oferim-icon{transform:scale(1.1)}
+.oferim-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:14px;transition:transform 0.3s}
+.oferim-card h3{font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--slate);margin-bottom:8px}
+.oferim-card p{font-size:13px;color:var(--text-mid);line-height:1.6}
+
+/* PACHETE */
+#pachete{background:var(--white)}
+.ptabs{display:flex;gap:7px;margin-bottom:28px;background:var(--cream);border-radius:12px;padding:5px;width:fit-content}
+.ptab{padding:8px 18px;font-size:13px;font-weight:600;border-radius:8px;border:none;background:transparent;color:var(--text-mid);transition:all 0.2s}
+.ptab.active{background:var(--white);color:var(--blue);box-shadow:var(--shadow)}
+.pgrid{display:grid;gap:18px}
+.pcrd{background:var(--bg);border-radius:18px;padding:26px;border:2px solid var(--border);transition:all 0.3s;position:relative}
+.pcrd:hover{border-color:var(--blue-mid);box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.pcrd.feat{border-color:var(--blue);background:var(--blue-light)}
+.pbadge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 12px;border-radius:20px;white-space:nowrap}
+.pico{font-size:26px;margin-bottom:12px}
+.pcrd h3{font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;color:var(--slate);margin-bottom:5px}
+.ptagline{font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:14px;line-height:1.4}
+.pitems{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.pitems li{font-size:13px;color:var(--text-mid);display:flex;gap:7px;align-items:flex-start;line-height:1.4}
+.pitems li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;font-size:11px;margin-top:1px}
+.durata-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.dpill{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);font-size:11px;font-weight:700;color:var(--text-mid);cursor:pointer;transition:all 0.18s;background:var(--white)}
+.dpill:hover,.dpill.sel{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.btn-pact{width:100%;background:var(--blue);color:#fff;border:none;padding:11px;font-size:14px;font-weight:600;border-radius:10px}
+.btn-pact:hover{background:var(--blue-mid);transform:translateY(-1px)}
+.btn-pghost{width:100%;background:transparent;border:1.5px solid var(--blue);color:var(--blue);padding:10px;font-size:14px;font-weight:600;border-radius:10px}
+.btn-pghost:hover{background:var(--blue-light)}
+
+/* CROSS */
+#cross{background:var(--cream)}
+.cross-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.cf-row{display:flex;gap:0;align-items:stretch}
+.cf-left{display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0}
+.cf-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.cf-line{flex:1;width:2px;background:var(--border);margin:3px 0}
+.cf-body{padding:0 0 16px 12px;flex:1}
+.cf-body h6{font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--slate);margin-bottom:2px}
+.cf-body p{font-size:12px;color:var(--text-light);line-height:1.4}
+.cf-row:last-child .cf-line{display:none}
+.cf-row:last-child .cf-body{padding-bottom:0}
+
+/* DIAGNOSTIC */
+#diagnostic{background:var(--white)}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.dpromise{background:linear-gradient(135deg,var(--blue-light),var(--purple-light));border-radius:16px;padding:24px;border:1px solid rgba(107,79,160,0.12)}
+.dpromise h4{font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--slate);margin-bottom:10px}
+.dpromise ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.dpromise li{font-size:13px;color:var(--text-mid);display:flex;gap:8px;align-items:flex-start}
+.ck{color:var(--green);font-weight:700;flex-shrink:0}
+.btn-dstart{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;padding:14px 26px;font-size:14px;font-weight:600;border-radius:12px;margin-top:18px;box-shadow:0 4px 20px rgba(107,79,160,0.25);display:block;width:100%;text-align:center}
+.btn-dstart:hover{transform:translateY(-2px)}
+
+/* ARTICOLE */
+#articole{background:var(--cream)}
+.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.art-card{background:var(--white);border-radius:14px;padding:22px;border:1px solid var(--border);cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
+.art-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--purple));transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease}
+.art-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.art-card:hover::before{transform:scaleX(1)}
+.art-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px;display:inline-block}
+.art-card h4{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;color:var(--slate);margin-bottom:9px;line-height:1.3}
+.art-card>p{font-size:13px;color:var(--text-mid);line-height:1.55}
+.art-read{font-size:12px;font-weight:700;color:var(--blue);margin-top:11px;display:inline-flex;align-items:center;gap:4px}
+.art-exp{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--border)}
+.art-exp.open{display:block}
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.swot-box{border-radius:9px;padding:11px}
+.swot-box h6{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.swot-box ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.swot-box ul li{font-size:11px;line-height:1.4;display:flex;gap:5px}
+.swot-box ul li::before{content:'·';font-weight:700;flex-shrink:0}
+.sw-s{background:#e6f7f1;border:1px solid #a8e0cc}.sw-s h6,.sw-s li::before{color:#166048}.sw-s li{color:#2d7a5e}
+.sw-w{background:#fdf0ee;border:1px solid var(--red-border)}.sw-w h6,.sw-w li::before{color:#8b1e14}.sw-w li{color:#b34a3a}
+.sw-o{background:var(--blue-light);border:1px solid #b8d4f5}.sw-o h6,.sw-o li::before{color:#1a4d8a}.sw-o li{color:#2a65a0}
+.sw-t{background:#fef3e2;border:1px solid var(--orange-border)}.sw-t h6,.sw-t li::before{color:#92560a}.sw-t li{color:#a06b20}
+
+/* HOW */
+#cum-lucrez{background:var(--white)}
+.howsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+.howstep{background:var(--bg);border-radius:14px;padding:20px 14px;text-align:center;border:1px solid var(--border);position:relative;transition:all 0.25s}
+.howstep:hover{box-shadow:var(--shadow);border-color:var(--blue-mid)}
+.howstep::after{content:'→';position:absolute;top:50%;right:-10px;transform:translateY(-50%);font-size:16px;color:var(--border);z-index:1}
+.howstep:last-child::after{display:none}
+.hownum{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin:0 auto 11px;color:#fff}
+.howstep h4{font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--slate);margin-bottom:5px}
+.howstep p{font-size:12px;color:var(--text-light);line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--slate);padding:48px 48px 26px}
+.ftop{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;margin-bottom:32px}
+.fbrand p{font-size:13px;color:rgba(255,255,255,0.4);margin-top:10px;line-height:1.65;max-width:280px}
+.flogo{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:#fff}
+.flogo span{color:#7baee8}
+.fcol h5{font-size:11px;font-weight:700;color:rgba(255,255,255,0.75);letter-spacing:0.5px;margin-bottom:10px;text-transform:uppercase}
+.fcol a{display:block;font-size:13px;color:rgba(255,255,255,0.38);margin-bottom:6px;transition:color 0.2s}
+.fcol a:hover{color:rgba(255,255,255,0.85)}
+.fbot{max-width:1060px;margin:0 auto;border-top:1px solid rgba(255,255,255,0.07);padding-top:16px;display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.25)}
+
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(30,45,61,0.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;backdrop-filter:blur(4px);overflow-y:auto}
+.overlay.active{display:flex}
+.modal{background:var(--white);border-radius:18px;padding:34px;width:100%;max-width:580px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.15);margin:auto}
+.modal.wide{max-width:720px}
+.mcl{position:absolute;top:12px;right:12px;background:var(--cream);border:none;width:27px;height:27px;border-radius:50%;font-size:13px;color:var(--text-mid);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.mcl:hover{background:var(--border)}
+.mlabel{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.mtitle{font-size:clamp(18px,2.5vw,24px);margin-bottom:7px}
+.msub{font-size:14px;color:var(--text-mid);margin-bottom:18px;line-height:1.6}
+.prog{margin-bottom:18px}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.prog-meta span:first-child{color:var(--text-mid);font-weight:500}
+.prog-meta span:last-child{color:var(--blue);font-weight:600}
+.prog-track{height:5px;background:var(--cream);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:3px;transition:width 0.4s ease}
+.secbadge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:13px}
+.qblock{margin-bottom:15px}
+.qtext{font-size:14px;color:var(--slate);font-weight:600;line-height:1.4;margin-bottom:3px}
+.qhint{font-size:12px;color:var(--text-light);margin-bottom:8px;font-style:italic;line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.18s;background:var(--white)}
+.opt:hover{border-color:var(--blue-mid);background:var(--blue-light)}
+.opt.sel{border-color:var(--blue);background:var(--blue-light)}
+.oradio{width:15px;height:15px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.18s}
+.opt.sel .oradio{border-color:var(--blue);background:var(--blue)}
+.odot{width:5px;height:5px;border-radius:50%;background:#fff;display:none}
+.opt.sel .odot{display:block}
+.otxt{font-size:13px;color:var(--text-mid);font-weight:500}
+.opt.sel .otxt{color:var(--blue);font-weight:600}
+.dnav{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.btn-bk{background:transparent;border:1.5px solid var(--border);color:var(--text-mid);padding:8px 14px;font-size:13px;font-weight:600;border-radius:8px}
+.btn-bk:hover{border-color:var(--blue);color:var(--blue)}
+.btn-nx{background:var(--blue);color:#fff;border:none;padding:9px 20px;font-size:13px;font-weight:600;border-radius:8px}
+.btn-nx:hover:not([disabled]){background:var(--blue-mid);transform:translateY(-1px)}
+.btn-nx[disabled]{background:var(--blue-light);color:var(--blue-mid);cursor:not-allowed}
+.fld{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:10px 12px;font-size:13px;border-radius:9px;outline:none;transition:border-color 0.2s;display:block;margin-bottom:9px}
+.fld:focus{border-color:var(--blue)}
+.fld-label{font-size:12px;font-weight:700;color:var(--text-mid);margin-bottom:4px;display:block}
+.fld-wrap{margin-bottom:11px}
+.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cab-row{display:grid;grid-template-columns:1fr 2fr;gap:7px;margin-bottom:7px}
+.add-cab{background:transparent;border:1.5px dashed var(--border);color:var(--text-mid);padding:7px;font-size:13px;font-weight:600;border-radius:9px;width:100%;margin-top:4px}
+.add-cab:hover{border-color:var(--blue);color:var(--blue)}
+.capicon{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--blue-light),var(--purple-light));display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:24px}
+.ef{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:11px 13px;font-size:14px;border-radius:9px;margin-bottom:9px;outline:none;transition:border-color 0.2s;display:block}
+.ef:focus{border-color:var(--blue)}
+.btn-cap{width:100%;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;padding:13px;font-size:14px;font-weight:600;border-radius:10px}
+.btn-cap:hover{transform:translateY(-1px)}
+.rsbanner{border-radius:14px;padding:20px;margin-bottom:18px;text-align:center}
+.rsnum{font-family:'Playfair Display',serif;font-size:52px;font-weight:400;line-height:1;margin-bottom:4px}
+.rsmsg{font-size:14px;font-weight:600;margin-bottom:2px}
+.rssub{font-size:12px;opacity:0.72}
+.bars-wrap{margin-bottom:14px}
+.bars-lbl{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
+.brow{margin-bottom:8px}
+.bmeta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
+.btrack{height:6px;background:var(--cream);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px}
+.risk-grp{margin-bottom:14px}
+.risk-grp-lbl{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:7px}
+.rcards{display:flex;flex-direction:column;gap:6px}
+.rcard{border-radius:9px;padding:11px 13px;border:1.5px solid transparent;display:flex;align-items:flex-start;gap:9px}
+.rcard.critical{background:#fdf0ee;border-color:var(--red-border)}
+.rcard.moderate{background:#fef3e2;border-color:var(--orange-border)}
+.rcard.good{background:var(--green-light);border-color:#a8e0cc}
+.rcard.excellent{background:var(--blue-light);border-color:#b8d4f5}
+.rcard-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.rcard-body h5{font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;margin-bottom:2px}
+.rcard.critical .rcard-body h5{color:#8b1e14}
+.rcard.moderate .rcard-body h5{color:#92560a}
+.rcard.good .rcard-body h5{color:#166048}
+.rcard.excellent .rcard-body h5{color:#1a4d8a}
+.rcard-body p{font-size:11px;line-height:1.4}
+.rcard.critical .rcard-body p{color:#b34a3a}
+.rcard.moderate .rcard-body p{color:#a06b20}
+.rcard.good .rcard-body p{color:#2d7a5e}
+.rcard.excellent .rcard-body p{color:#2a65a0}
+.rctas{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.btn-rp{flex:1;background:var(--blue);color:#fff;border:none;padding:11px;font-size:13px;font-weight:600;border-radius:9px;cursor:pointer}
+.btn-rp:hover{background:var(--blue-mid)}
+.btn-rs{background:transparent;border:1.5px solid var(--border);color:var(--text-mid);padding:10px;font-size:13px;font-weight:600;border-radius:9px;cursor:pointer}
+.btn-rs:hover{border-color:var(--blue);color:var(--blue)}
+.succ{text-align:center;padding:14px 0}
+.succcircle{width:60px;height:60px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;color:var(--green)}
+.tip-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:4px}
+.tip-item{padding:8px 11px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.18s;background:var(--white)}
+.tip-item:hover{border-color:var(--blue-mid);background:var(--blue-light)}
+.tip-item.sel{border-color:var(--blue);background:var(--blue-light)}
+.tip-item span:last-child{font-size:12px;font-weight:500;color:var(--text-mid)}
+.tip-item.sel span:last-child{color:var(--blue);font-weight:600}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-mark"><svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M6 9l2 2 4-4"/></svg></div>
+    <span class="nav-name">Clarity <span>Medical</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#despre">Despre noi</a>
+    <a href="#ce-oferim">Ce oferim</a>
+    <a href="#pachete">Pachete</a>
+    <a href="#diagnostic">Diagnostic</a>
+    <a href="#articole">Articole</a>
+    <button class="btn-o" onclick="openDiag()">Diagnostic gratuit</button>
+    <button class="btn-p" onclick="openBooking()">Hai să vorbim</button>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hblob hb1"></div><div class="hblob hb2"></div><div class="hblob hb3"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow reveal"><div style="width:6px;height:6px;border-radius:50%;background:var(--blue)"></div>Clarity Medical · claritymedical.ro</div>
+      <h1 class="hero-h1 reveal reveal-delay-1">Fiecare minut al tău<br>aparține <em>pacienților tăi.</em></h1>
+      <div class="motto-wrap reveal reveal-delay-2"><div class="motto-dyn" id="mottoText"></div></div>
+      <p class="hero-lead reveal reveal-delay-3">Medicii excepționali se concentrează pe actul medical. <strong>Noi construim echipa, sistemele și experiența</strong> care fac asta posibil — în fiecare punct de contact cu pacientul tău.</p>
+      <div class="hero-ctas reveal reveal-delay-4">
+        <button class="btn-hp" onclick="openDiag()">Diagnostic clinică gratuit</button>
+        <button class="btn-hs" onclick="openBooking()">Hai să vorbim</button>
+      </div>
+      <div class="trust-row reveal reveal-delay-4">
+        <span class="trust-lbl">Lucrez cu clinici de:</span>
+        <div class="tbadge"><div style="width:6px;height:6px;border-radius:50%;background:var(--blue)"></div>Stomatologie</div>
+        <div class="tbadge"><div style="width:6px;height:6px;border-radius:50%;background:var(--green)"></div>Estetică</div>
+        <div class="tbadge"><div style="width:6px;height:6px;border-radius:50%;background:var(--purple)"></div>Multidisciplinare</div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="hero-card">
+        <div class="hcard-title">Journey-ul pacientului tău ideal</div>
+        <div class="jsteps">
+          <div class="jstep"><div class="jicon" style="background:var(--blue-light)">🌐</div><div><h5>Primul contact</h5><p>Site, telefon, walk-in — experiență caldă de la prima secundă</p></div></div>
+          <div class="jstep"><div class="jicon" style="background:var(--blue-light)">📅</div><div><h5>Programarea</h5><p>Recepție activă, confirmare, zero ratări</p></div></div>
+          <div class="jstep"><div class="jicon" style="background:var(--green-light)">🩺</div><div><h5>Consultația + Ghidul Pacientului</h5><p>Medicul examinează, ghidul notează — plan complet</p></div></div>
+          <div class="jstep"><div class="jicon" style="background:var(--green-light)">📋</div><div><h5>Prezentarea planului</h5><p>Pacientul înțelege valoarea, nu simte prețul ca pe o povară</p></div></div>
+          <div class="jstep"><div class="jicon" style="background:var(--purple-light)">🔄</div><div><h5>Cross-referral intern</h5><p>Fiecare medic sesizează și îndrumă — pacientul rămâne</p></div></div>
+          <div class="jstep"><div class="jicon" style="background:var(--purple-light)">💜</div><div><h5>Retenție & succes</h5><p>Recall, recenzii, cazuri documentate, referale active</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="despre">
+  <div class="wrap">
+    <div class="reveal"><div class="slabel" style="color:var(--blue)"><div class="sbar" style="background:var(--blue)"></div>Despre noi</div></div>
+    <h2 class="stitle anim-title reveal">O echipă cu experiență reală <span class="hl">în clinici reale.</span></h2>
+    <p class="ssub reveal">Nu am construit teorii. Am lucrat în interiorul clinicilor — cu echipe, cu cifre, cu pacienți și cu proprietari care voiau să doarmă liniăștiți noaptea.</p>
+    <div class="despre-grid">
+      <div class="exp-cards">
+        <div class="exp-card reveal reveal-delay-1"><div class="exp-icon" style="background:var(--blue-light)">🏥</div><div><h4>Management operațional în clinici medicale</h4><p>Experiență directă în implementarea sistemelor de performanță — de la recepție și Ghidul Pacientului, până la relația owner-medici și structura financiară.</p></div></div>
+        <div class="exp-card reveal reveal-delay-2"><div class="exp-icon" style="background:var(--green-light)">📊</div><div><h4>Creștere de revenue cu rezultate măsurabile</h4><p>Am crescut revenue-ul clinic cu peste 28% prin optimizarea journey-ului pacientului, restructurarea echipelor și implementarea sistemelor de urmărire a performanței.</p></div></div>
+        <div class="exp-card reveal reveal-delay-3"><div class="exp-icon" style="background:var(--purple-light)">🎓</div><div><h4>Training specializat — trainer acreditat, NLP Master Practitioner</h4><p>Programe construite pe comportament real, nu pe teorie. Recepții, Ghizi ai Pacientului, medici — fiecare echipă are propriul program adaptat clinicii tale.</p></div></div>
+        <div class="exp-card reveal reveal-delay-4"><div class="exp-icon" style="background:var(--blue-light)">🔗</div><div><h4>Management de performanță la scară</h4><p>Experiență în gestionarea rețelelor de locații — structuri de comisionare, obiective SMART, ședințe eficiente și planuri de exit acolo unde a fost cazul.</p></div></div>
+      </div>
+      <div class="val-items reveal reveal-delay-2">
+        <div class="val-item"><div class="val-num">01</div><div><h5>Nu venim cu manuale — venim cu implementare</h5><p>Lucrăm direct cu echipa ta, în clinica ta. Construim sistemele împreună, nu le predăm dintr-un PDF.</p></div></div>
+        <div class="val-item"><div class="val-num">02</div><div><h5>Respectăm actul medical — construim în jurul lui</h5><p>Medicul trebuie să fie prezent 100% pentru pacient. Noi ne ocupăm de tot ce înseamnă echipă, experiență și cifre.</p></div></div>
+        <div class="val-item"><div class="val-num">03</div><div><h5>Măsurăm tot ce facem</h5><p>Fiecare acțiune are un indicator. Fiecare indicator are un responsabil. Nicio decizie fără date.</p></div></div>
+        <div class="val-item"><div class="val-num">04</div><div><h5>Rezultatele rămân după ce plecăm</h5><p>Nu creăm dependență. Construim sisteme care funcționează independent — cu sau fără noi în clinică.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ce-oferim">
+  <div class="wrap">
+    <div class="reveal"><div class="slabel" style="color:var(--green)"><div class="sbar" style="background:var(--green)"></div>Ce oferim</div></div>
+    <h2 class="stitle anim-title reveal">Tot ce are nevoie clinica ta <span class="hl">să funcționeze impecabil.</span></h2>
+    <p class="ssub reveal">De la primul apel până la cazul de succes documentat — construim sistemele care fac ca fiecare pacient să se simtă îngrijit în fiecare moment.</p>
+    <div class="oferim-grid">
+      <div class="oferim-card reveal reveal-delay-1"><div class="oferim-icon" style="background:var(--blue-light)">🗺️</div><h3>Fiecare pacient, un journey construit cu grijă</h3><p>Optimizăm fiecare punct de contact — protocoale clare, echipă pregătită, experiență consistentă indiferent de cine este de serviciu.</p></div>
+      <div class="oferim-card reveal reveal-delay-2"><div class="oferim-icon" style="background:var(--green-light)">📡</div><h3>Știi în fiecare zi dacă clinica merge în direcția bună</h3><p>Implementăm indicatorii care contează și sistemele care îți dau claritate în timp real — nu la finalul lunii, când e prea târziu să intervii.</p></div>
+      <div class="oferim-card reveal reveal-delay-3"><div class="oferim-icon" style="background:var(--purple-light)">💚</div><h3>Fiecare pacient urmărit — nimeni nu cade prin fisuri</h3><p>Fiecare pacient are un status clar, o persoană responsabilă și un next step definit — de la prima programare până dincolo de ultima intervenție.</p></div>
+      <div class="oferim-card reveal reveal-delay-1"><div class="oferim-icon" style="background:var(--blue-light)">🤝</div><h3>Întâlniri care produc decizii, nu consumă timp</h3><p>Ședințe cu agendă clară, cifre reale și acțiuni cu responsabili și termene. Fiecare întâlnire produce un pas concret înainte.</p></div>
+      <div class="oferim-card reveal reveal-delay-2"><div class="oferim-icon" style="background:var(--green-light)">🎯</div><h3>Training specializat și adaptat clinicii tale</h3><p>Fiecare program este construit pentru echipa ta specifică — recepție, Ghid al Pacientului, medici — pe situații reale din clinica ta.</p></div>
+      <div class="oferim-card reveal reveal-delay-3"><div class="oferim-icon" style="background:var(--purple-light)">👤</div><h3>Fiecare om din echipă, la potențialul lui real</h3><p>Evaluăm competențele, identificăm gap-urile și construim planuri de dezvoltare cu acțiuni concrete și măsurabile — urmărite săptămânal.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pachete">
+  <div class="wrap">
+    <div class="reveal"><div class="slabel" style="color:var(--purple)"><div class="sbar" style="background:var(--purple)"></div>Pachete de colaborare</div></div>
+    <h2 class="stitle anim-title reveal">Alege formula potrivită <span class="hl">pentru clinica ta.</span></h2>
+    <p class="ssub reveal" style="margin-bottom:28px">Indiferent de dimensiunea clinicii sau urgența situației, există o formulă care se potrivește exact nevoilor tale.</p>
+    <div class="ptabs reveal" id="ptabs">
+      <button class="ptab active" onclick="showP('toate',this)">Toate</button>
+      <button class="ptab" onclick="showP('proiect',this)">Pe proiect</button>
+      <button class="ptab" onclick="showP('consultanta',this)">Consultanță</button>
+      <button class="ptab" onclick="showP('manager',this)">Manager Eficient</button>
+      <button class="ptab" onclick="showP('training',this)">Training</button>
+    </div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+</section>
+
+<section id="cross">
+  <div class="wrap">
+    <div class="cross-grid">
+      <div>
+        <div class="reveal"><div class="slabel" style="color:var(--green)"><div class="sbar" style="background:var(--green)"></div>Cross-referral intern</div></div>
+        <h2 class="stitle anim-title reveal">Valoarea clinicii tale stă în <span class="hl">cât rămâne pacientul în ea.</span></h2>
+        <p class="ssub reveal" style="margin-bottom:16px">Pacientul care vine la oftalmolog și menționează dureri de genunchi nu ar trebui să plece fără o programare la ortopedie. Construim sistemul prin care asta se întâmplă natural.</p>
+        <div class="reveal" style="padding:16px;background:var(--green-light);border-radius:12px;border-left:3px solid var(--green)"><p style="font-size:14px;color:var(--slate);font-weight:500;line-height:1.6">Medicii nu sunt formați să vândă. Sunt formați să vindece. Noi construim sistemul prin care îndrumarea internă se întâmplă natural — și pacientul rămâne în clinica ta.</p></div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div style="background:var(--white);border-radius:16px;padding:24px;border:1px solid var(--border);box-shadow:var(--shadow)">
+          <h4 style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--slate);margin-bottom:14px">Cum funcționează cross-referral-ul intern:</h4>
+          <div class="cf-row"><div class="cf-left"><div class="cf-dot" style="background:var(--blue)">1</div><div class="cf-line"></div></div><div class="cf-body"><h6>Medicul sesizează nevoia</h6><p>Identifică o nevoie pentru altă specialitate și o menționează cu căldură</p></div></div>
+          <div class="cf-row"><div class="cf-left"><div class="cf-dot" style="background:var(--blue)">2</div><div class="cf-line"></div></div><div class="cf-body"><h6>Precalificare și trimitere caldă</h6><p>Scurtă precalificare și recomandare internă concretă — nu un sfat vag</p></div></div>
+          <div class="cf-row"><div class="cf-left"><div class="cf-dot" style="background:var(--green)">3</div><div class="cf-line"></div></div><div class="cf-body"><h6>Programarea se face din cabinet</h6><p>Ghidul sau recepția face programarea imediat — pacientul nu pleacă cu un număr</p></div></div>
+          <div class="cf-row"><div class="cf-left"><div class="cf-dot" style="background:var(--green)">4</div><div class="cf-line"></div></div><div class="cf-body"><h6>Pacientul rămâne în ecosistem</h6><p>Revenue adițional, experiență integrată, fidelizare crescută</p></div></div>
+          <div class="cf-row"><div class="cf-left"><div class="cf-dot" style="background:var(--purple)">5</div></div><div class="cf-body"><h6>Sistemul se măsoară și se optimizează</h6><p>Volume, surse, destinații și rate de conversie — urmărite lunar</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="diagnostic">
+  <div class="wrap">
+    <div class="dgrid">
+      <div>
+        <div class="reveal"><div class="slabel" style="color:var(--blue)"><div class="sbar" style="background:var(--blue)"></div>Diagnostic gratuit</div></div>
+        <h2 class="stitle anim-title reveal">Un diagnostic onest al <span class="hl">sistemelor din clinica ta.</span></h2>
+        <p class="ssub reveal" style="margin-bottom:13px">30 de întrebări care radiografiază realitatea clinicii tale — construite din experiență reală, adaptate tipologiei și specialității tale.</p>
+        <p class="reveal" style="font-size:14px;color:var(--text-light);line-height:1.65">La final primești un raport structurat pe niveluri de risc cu recomandări concrete pentru fiecare zonă.</p>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="dpromise">
+          <h4>Ce primești în raport:</h4>
+          <ul>
+            <li><span class="ck">✓</span> Risc Critic — ce necesită acțiune imediată</li>
+            <li><span class="ck">✓</span> Risc Moderat — unde se pierd bani și pacienți silențios</li>
+            <li><span class="ck">✓</span> Ce funcționează bine — și de ce trebuie protejat</li>
+            <li><span class="ck">✓</span> Scor per zonă, adaptat tipologiei clinicii tale</li>
+            <li><span class="ck">✓</span> Raport pe email + opțional 30 min cu noi</li>
+          </ul>
+        </div>
+        <button class="btn-dstart" onclick="openDiag()">Diagnostic clinică gratuit → ~8 minute</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="articole">
+  <div class="wrap">
+    <div class="reveal"><div class="slabel" style="color:var(--purple)"><div class="sbar" style="background:var(--purple)"></div>Articole & Perspective</div></div>
+    <h2 class="stitle anim-title reveal">Ce se întâmplă cu adevărat <span class="hl">în clinicile din România.</span></h2>
+    <p class="ssub reveal">Realități nerostite, probleme mascate ca norme și oportunități pe care le pierzi fără să știi că există.</p>
+    <div class="art-grid" id="artGrid"></div>
+  </div>
+</section>
+
+<section id="cum-lucrez">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:36px">
+      <div class="reveal"><div class="slabel" style="color:var(--blue);justify-content:center"><div class="sbar" style="background:var(--blue)"></div>Cum lucrăm</div></div>
+      <h2 class="stitle anim-title reveal" style="text-align:center">De la diagnostic la <span class="hl">sistem funcțional.</span></h2>
+    </div>
+    <div class="howsteps">
+      <div class="howstep reveal reveal-delay-1"><div class="hownum" style="background:var(--blue)">1</div><h4>Diagnosticul</h4><p>Completezi chestionarul sau ne vedem direct. Înțelegem clinica ta în profunzime.</p></div>
+      <div class="howstep reveal reveal-delay-2"><div class="hownum" style="background:var(--blue-mid)">2</div><h4>Raportul & Prioritățile</h4><p>Îți prezentăm ce am găsit și ce aduce cel mai rapid diferență — acțiuni concrete, ordonate după impact.</p></div>
+      <div class="howstep reveal reveal-delay-3"><div class="hownum" style="background:var(--purple)">3</div><h4>Implementarea</h4><p>Lucrăm direct cu echipa ta — training, sisteme, obiective. Construim împreună.</p></div>
+      <div class="howstep reveal reveal-delay-4"><div class="hownum" style="background:var(--green)">4</div><h4>Urmărirea</h4><p>Ședințe săptămânale, KPI-uri monitorizate, ajustări în timp real.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ftop">
+    <div class="fbrand">
+      <div class="flogo">Clarity <span>Medical</span></div>
+      <p>Fiecare minut al tău aparține pacienților tăi. Noi construim echipa și sistemele care fac asta posibil — în clinici din România.</p>
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button class="btn-p" onclick="openDiag()" style="font-size:12px;padding:7px 14px">Diagnostic gratuit</button>
+        <button onclick="openBooking()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.55);padding:7px 12px;font-size:12px;font-weight:600;border-radius:8px;cursor:pointer">Hai să vorbim</button>
+      </div>
+    </div>
+    <div class="fcol">
+      <h5>Ce oferim</h5>
+      <a href="#ce-oferim">Journey pacient</a>
+      <a href="#ce-oferim">Sisteme & KPI</a>
+      <a href="#ce-oferim">Training specializat</a>
+      <a href="#pachete">Manager Eficient</a>
+      <a href="#cross">Cross-referral intern</a>
+    </div>
+    <div class="fcol">
+      <h5>Contact</h5>
+      <a href="mailto:contact@claritymedical.ro">contact@claritymedical.ro</a>
+      <a href="#diagnostic">Diagnostic gratuit</a>
+      <a href="#articole">Articole</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <span>© 2025 Clarity Medical · claritymedical.ro</span>
+    <span>Construit cu grijă pentru medicii din România</span>
+  </div>
+</footer>
+
+<div id="diagModal" class="overlay" onclick="if(event.target===this)closeDiag()">
+  <div style="max-width:620px;width:100%;padding:20px 0" id="diagInner"></div>
+</div>
+<div id="bookModal" class="overlay" style="align-items:center" onclick="if(event.target===this)closeBooking()">
+  <div class="modal" id="bookInner"></div>
+</div>
+<script>
+// SCROLL + ANIMATIONS
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
+  document.querySelectorAll('.reveal').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-50)el.classList.add('visible');});
+  document.querySelectorAll('.anim-title').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-40)el.classList.add('lit');});
+});
+setTimeout(function(){document.querySelectorAll('.reveal').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-50)el.classList.add('visible');});},120);
+
+// DYNAMIC MOTTO
+var MOTTOS=['Am grijă de echipa ta ca tu să te poți concentra pe pacienții tăi.','Sisteme care funcționează. Echipă care performează. Tu care vindeci.','Pacientul tău merită să se simtă îngrijit în fiecare moment.','Nu teoria schimbă clinicile. Implementarea corectă o face.','Clinica ta, la potențialul ei real — cu oameni pregătiți și sisteme clare.'];
+var mIdx=0;
+function cycleMotto(){var el=document.getElementById('mottoText');el.classList.remove('vis');setTimeout(function(){el.textContent=MOTTOS[mIdx];mIdx=(mIdx+1)%MOTTOS.length;el.classList.add('vis');},480);}
+cycleMotto();setInterval(cycleMotto,3800);
+
+// PACHETE
+var PACHETE=[
+  {id:'proiect',ico:'🎯',name:'Consultanță pe Proiect',tag:'Ai o problemă clară. Venim cu o soluție clară.',badge:null,feat:false,
+   items:['Diagnostic complet al problemei specifice','Plan de acțiune cu pași și responsabili','Implementare și urmărire pe durata proiectului','Raport final cu rezultate și recomandări'],
+   durate:['Negociat per proiect'],cta:'Solicită ofertă'},
+  {id:'consultanta',ico:'⏱️',name:'Consultanță pe Oră',tag:'Flexibilitate maximă pentru nevoile punctuale.',badge:null,feat:false,
+   items:['Sesiuni dedicate pe teme specifice','Feedback pe situații concrete din clinică','Recomandări acționabile imediat','Disponibilitate online sau în clinică'],
+   durate:['Săptămânal','Lunar','La cerere'],cta:'Solicită disponibilitate'},
+  {id:'manager',ico:'🏥',name:'Manager Eficient',tag:'O zi pe săptămână care schimbă tot restul săptămânii.',badge:'Recomandat',feat:true,
+   items:['Ședință strategică cu managerul clinicii','Analiză cifre + acțiuni de recuperare concrete','Ședință de echipă structurată cu agendă clară','Feedback individual recepție și personal','Urmărire implementare din săptămâna anterioară','Raport săptămânal cu KPI și status acțiuni'],
+   durate:['1 lună','3 luni','6 luni'],cta:'Solicită ofertă'},
+  {id:'training',ico:'🎓',name:'Training Specializat',tag:'Echipa ta, la potențialul ei real.',badge:null,feat:false,
+   items:['Program personalizat per rol (recepție, Ghid Pacient, medici)','Situații reale din clinica ta, nu exemple generice','Exerciții practice, roleplay, feedback imediat','Suport post-training pentru consolidare','Evaluare competențe înainte și după'],
+   durate:['Per modul','3 luni','6 luni'],cta:'Solicită program'}
+];
+var curF='toate';
+function showP(f,btn){curF=f;document.querySelectorAll('.ptab').forEach(function(t){t.classList.remove('active');});btn.classList.add('active');renderP();}
+function renderP(){
+  var list=curF==='toate'?PACHETE:PACHETE.filter(function(p){return p.id===curF;});
+  var cols=list.length===1?'1fr':list.length===2?'1fr 1fr':'repeat(3,1fr)';
+  var g=document.getElementById('pgrid');g.style.gridTemplateColumns=cols;
+  g.innerHTML=list.map(function(p){
+    var dH=p.durate.map(function(d,i){return'<span class="dpill'+(i===0?' sel':'')+'" onclick="selD(this)">'+d+'</span>';}).join('');
+    return'<div class="pcrd'+(p.feat?' feat':'')+'">'+(p.badge?'<div class="pbadge">'+p.badge+'</div>':'')
+      +'<div class="pico">'+p.ico+'</div><h3>'+p.name+'</h3><p class="ptagline">'+p.tag+'</p>'
+      +'<div class="durata-row">'+dH+'</div>'
+      +'<ul class="pitems">'+p.items.map(function(it){return'<li>'+it+'</li>';}).join('')+'</ul>'
+      +'<button class="'+(p.feat?'btn-pact':'btn-pghost')+'" onclick="openBooking()">'+p.cta+' →</button></div>';
+  }).join('');
+}
+function selD(el){var r=el.closest('.durata-row');r.querySelectorAll('.dpill').forEach(function(p){p.classList.remove('sel');});el.classList.add('sel');}
+renderP();
+
+// ARTICOLE
+var ARTS=[
+  {tag:'Retenție',tc:'var(--green)',title:'De ce pleacă pacienții și nu mai revin — și de ce nu e vina lor.',intro:'Cel mai frecvent răspuns al proprietarilor de clinici este "au găsit ceva mai ieftin". De cele mai multe ori, nu e adevărat.',s:['Pacienții cu experiență caldă revin de 3x mai des','Follow-up-ul post-intervenție reduce abandonul cu 40%'],w:['Fără recall activ, 60% din pacienți dispar în 6 luni','Nimeni nu urmărește de ce nu s-au mai întors'],o:['Un sistem simplu de recall poate recupera zeci de pacienți lunar','Fiecare pacient recuperat costă de 5x mai puțin decât unul nou'],t:['Clinici concurente cu sisteme de fidelizare mai bune','Pacientul care pleacă tăcut devine recenzie negativă']},
+  {tag:'Recepție',tc:'var(--blue)',title:'Recepția care răspunde vs. recepția care construiește relații.',intro:'Diferența nu e de talent sau carismă. E de sistem, de training și de așteptări clare comunicate.',s:['O recepție pregătită crește conversia apeluri→programări cu 30-50%','Scripturile reduc variabilitatea și protejează brandul'],w:['Recepțiile neantrenate pierd pacienți din primele 30 de secunde','Fără KPI de recepție, nu știi ce se pierde zilnic'],o:['Training de 2 zile poate transforma comportamentul echipei','Comisioanele legate de conversie aliniază instant interesele'],t:['Recepție bună care pleacă duce cu ea tot know-how-ul','Fără sisteme, totul depinde de bunăvoința fiecăruia']},
+  {tag:'Plan Tratament',tc:'var(--purple)',title:'Planul de tratament prezentat prost — cea mai scumpă greșeală.',intro:'Medicul a făcut un plan excelent. Pacientul a auzit un preț mare și a plecat să se gândească. Cine e responsabil?',s:['Un plan pe limbajul pacientului are rata de acceptare cu 40% mai mare','Planul funcțional alături de cel ideal reduce abandonul decisional'],w:['Medicii nu sunt formați să prezinte financiar','Obiecțiile de preț neadresate devin pierderi definitive'],o:['Ghidul Pacientului poate prelua prezentarea financiară','Finanțarea transformă un "nu" în "da" pentru 30% din cazuri'],t:['Pacienții informați online compară prețuri fără context','Un plan respins e greu de reactivat după 2 săptămâni']},
+  {tag:'Sezonalitate',tc:'#d97706',title:'Decembrie și august — lunile care arată cine are sisteme și cine nu.',intro:'Sezonalitatea e previzibilă de ani de zile. Și totuși, clinicile sunt surprinse de ea în fiecare an.',s:['Clinicile cu plan sezonier pregătit pierd sub 10% din revenue','Comunicarea proactivă reduce anulările în perioadele slabe'],w:['Fără plan, reacția vine prea târziu — în panică și cu discounturi','Echipa demotivată în lunile slabe performează și mai slab'],o:['Perioadele slabe sunt ideale pentru training intern','Campanii de recall în august reactivează zeci de pacienți'],t:['Concediile medicilor suprapuse creează goluri majore','Pacienții care nu găsesc loc trec la altă clinică']},
+  {tag:'Echipă',tc:'var(--green)',title:'Medicul bun nu e suficient — și el știe asta.',intro:'Cel mai bun medic dintr-o clinică dezorganizată va produce frustrare — pentru el, pentru echipă și pentru pacienți.',s:['O echipă aliniată multiplică impactul actului medical','Protocoalele clare reduc erorile și stresul echipei'],w:['Medicul care supervizează și echipa pierde timp de cabinet','Dependența de un singur om cheie este cel mai mare risc'],o:['Sisteme clare permit medicului să rămână în zona de excelență','O echipă bine construită este cel mai puternic avantaj competitiv'],t:['Echipa fără direcție găsește singură calea — nu mereu cea bună','Fluctuația fără sisteme documentate resetează clinica de la zero']},
+  {tag:'Risc Contractual',tc:'#c0392b',title:'Ce se întâmplă când un medic pleacă cu pacienții lui.',intro:'S-a mai întâmplat. Se va mai întâmpla. Întrebarea e dacă clinica ta e pregătită.',s:['Contractele corecte protejează portofoliul fără să afecteze relația','Un medic motivat corect nu vrea să plece'],w:['Contractele fără clauze de non-solicitate nu protejează nimic','Relația informală cu medicii e cea mai fragilă fundație'],o:['Restructurarea contractuală se poate face fără conflict','Sisteme de urmărire a pacienților reduc dependența de medic'],t:['Medicul care pleacă poate duce cu el 30-40% din revenue','Pacienții loiali medicului, nu clinicii, urmează medicul']},
+  {tag:'Reputație',tc:'var(--purple)',title:'De ce nu primești recenzii deși pacienții sunt mulțumiți.',intro:'Pacienții mulțumiți trăiesc mulțumiți și tac. Dacă nu intervii activ, profilul tău online nu te reprezintă.',s:['Un pacient fericit solicitat corect lasă recenzia în 80% din cazuri','Recenziile recente contează mai mult decât cele vechi'],w:['Fără un proces de solicitare, recenziile vin accidental','Profil Google cu puține recenzii pierde față de concurență'],o:['Post-intervenție este momentul ideal pentru solicitare','Recenziile bune reduc costul de achiziție a pacienților noi'],t:['O recenzie negativă neadresată cântărește mai mult decât 10 pozitive','Pacienții verifică recenziile înainte de primul apel — mereu']},
+  {tag:'Pricing',tc:'var(--blue)',title:'Prețul mic nu aduce pacienți mai mulți — aduce pacienți mai puțin mulțumiți.',intro:'Clinicile care scad prețurile pentru a atrage pacienți intră într-o spirală din care e greu de ieșit.',s:['Prețul corect justificat prin valoare construiește loialitate','Pacienții care aleg pe valoare se plâng mai puțin și revin mai des'],w:['Prețul mic atrage pacienți sensibili la preț — care cer mereu mai puțin','Marja mică nu lasă loc de investiție în echipă sau echipament'],o:['Justificarea valorii prin experiență poate permite creșteri de 15-20%','Transparența prețurilor construiește încredere, nu frică'],t:['Concurența pe preț este un joc pe care nu îl poți câștiga','Un preț mic semnalează calitate slabă pentru mulți pacienți']},
+  {tag:'Revenue Ascuns',tc:'var(--green)',title:'Cross-referral intern — revenue ascuns în propria ta clinică.',intro:'Clinicile multidisciplinare au un avantaj competitiv imens față de cabinete individuale. Puțini îl valorifică.',s:['Fiecare trimitere internă costă zero în achiziție','Pacientul cu servicii complete dintr-un loc devine loial locului'],w:['Fără protocol, trimiterile interne se întâmplă ocazional','Medicii nu se simt confortabil să recomande intern fără sistem'],o:['Un protocol simplu de 60 secunde poate genera 20-30% revenue adițional','Urmărirea trimiterilor identifică specialitățile subperformante'],t:['Medicii care nu colaborează bine blochează cross-referral-ul','Pacientul neîndrumat intern va găsi serviciul în altă clinică']},
+  {tag:'Management',tc:'var(--purple)',title:'Când managerul ești tu — costul real al pălăriei prea mari.',intro:'Proprietarul care este și medic, și manager, și HR nu este eficient în niciun rol. Și știe asta.',s:['Un owner concentrat pe strategie produce mai multă valoare','Delegarea cu sisteme clare reduce stresul și crește performanța'],w:['Fără separarea rolurilor, deciziile strategice sunt amânate pentru urgențe','Echipa fără manager clar se autogestionează — nu mereu bine'],o:['Un manager eficient extern poate schimba dinamica în 30-60 de zile','Sisteme de raportare clare reduc timpul în management cu 60%'],t:['Burnout-ul owner-ului afectează întreaga clinică','O clinică fără management clar nu se poate scala']},
+  {tag:'Follow-up',tc:'var(--green)',title:'Apelul de 3 minute care schimbă tot ce simte pacientul despre tine.',intro:'Post-intervenție, pacientul este vulnerabil. Cine îl contactează primul determină loialitatea lui.',s:['Un apel de urmărire post-intervenție crește satisfacția cu 35%','Pacienții contactați post-tratament recomandă de 2x mai des'],w:['Fără protocol, follow-up-ul depinde de inițiativa fiecăruia','Pacienții cu complicații minore necontactați devin recenzii negative'],o:['Automatizarea parțială reduce efortul echipei la minimum','Fiecare apel este o oportunitate pentru pasul următor'],t:['Pacientul anxios necontactat caută răspunsuri online — și găsește tot felul','Un pacient pierdut post-intervenție e cel mai greu de recuperat']},
+  {tag:'KPI',tc:'var(--blue)',title:'KPI-urile pe care orice clinică ar trebui să le urmărească săptămânal.',intro:'Nu indicatorii complecși fac diferența — ci urmărirea constantă a celor simpli și corecți.',s:['Clinicile care urmăresc KPI săptămânal reacționează de 4x mai rapid','KPI clari per rol elimină ambiguitatea și conflictele de performanță'],w:['Fără date, deciziile se iau pe intuiție — uneori corectă, adesea costisitoare','Prea mulți indicatori paralizează — niciunul relevant nu se vede'],o:['5 KPI urmăriți constant valorează mai mult decât 50 ignorați','Un dashboard simplu poate fi construit în 2 zile și folosit ani de zile'],t:['Datele fără context pot induce decizii greșite','KPI fără acțiuni predefinite la deviații sunt doar numere pe hârtie']}
+];
+
+function renderArts(){
+  document.getElementById('artGrid').innerHTML=ARTS.map(function(a,i){
+    var sw='<div class="swot-grid">'
+      +'<div class="swot-box sw-s"><h6>Puncte forte</h6><ul>'+a.s.map(function(x){return'<li>'+x+'</li>';}).join('')+'</ul></div>'
+      +'<div class="swot-box sw-w"><h6>Vulnerabilități</h6><ul>'+a.w.map(function(x){return'<li>'+x+'</li>';}).join('')+'</ul></div>'
+      +'<div class="swot-box sw-o"><h6>Oportunități</h6><ul>'+a.o.map(function(x){return'<li>'+x+'</li>';}).join('')+'</ul></div>'
+      +'<div class="swot-box sw-t"><h6>Riscuri</h6><ul>'+a.t.map(function(x){return'<li>'+x+'</li>';}).join('')+'</ul></div></div>';
+    return'<div class="art-card reveal" style="transition-delay:'+(i%3*0.08)+'s" onclick="togArt(this)">'
+      +'<span class="art-tag" style="color:'+a.tc+'">'+a.tag+'</span>'
+      +'<h4>'+a.title+'</h4><p>'+a.intro+'</p>'
+      +'<span class="art-read">Citește analiza <span>↓</span></span>'
+      +'<div class="art-exp">'+sw+'</div></div>';
+  }).join('');
+}
+renderArts();
+function togArt(c){var e=c.querySelector('.art-exp'),s=c.querySelector('.art-read span'),o=e.classList.contains('open');e.classList.toggle('open',!o);s.textContent=o?'↓':'↑';}
+
+// DIAGNOSTIC DATA
+var JUDETE={'Alba':['Alba Iulia','Aiud','Blaj','Sebeș'],'Arad':['Arad','Ineu','Lipova'],'Argeș':['Pitești','Câmpulung','Curtea de Argeș','Mioveni'],'Bacău':['Bacău','Onești','Moinești'],'Bihor':['Oradea','Salonta','Beiuș'],'Bistrița-Năsăud':['Bistrița','Năsăud'],'Botoșani':['Botoșani','Dorohoi'],'Brașov':['Brașov','Făgăraș','Săcele','Zărnești'],'Brăila':['Brăila','Ianca'],'Buzău':['Buzău','Râmnicu Sărat'],'Caraș-Severin':['Reșița','Caransebeș'],'Călărași':['Călărași','Oltenița'],'Cluj':['Cluj-Napoca','Turda','Dej','Câmpia Turzii'],'Constanța':['Constanța','Mangalia','Medgidia','Năvodari'],'Covasna':['Sfântu Gheorghe','Târgu Secuiesc'],'Dâmbovița':['Târgoviște','Moreni'],'Dolj':['Craiova','Bailești','Calafat'],'Galați':['Galați','Tecuci'],'Giurgiu':['Giurgiu'],'Gorj':['Târgu Jiu','Motru'],'Harghita':['Miercurea Ciuc','Odorheiu Secuiesc'],'Hunedoara':['Deva','Hunedoara','Petroșani'],'Ialomița':['Slobozia','Fetești'],'Iași':['Iași','Pașcani','Hârlău'],'Ilfov':['Voluntari','Buftea','Pantelimon'],'Maramureș':['Baia Mare','Sighetu Marmației'],'Mehedinți':['Drobeta-Turnu Severin','Orșova'],'Mureș':['Târgu Mureș','Reghin','Sighișoara'],'Neamț':['Piatra Neamț','Roman'],'Olt':['Slatina','Caracal'],'Prahova':['Ploiești','Câmpina','Sinaia','Breaza'],'Satu Mare':['Satu Mare','Carei'],'Sălaj':['Zalău','Șimleu Silvaniei'],'Sibiu':['Sibiu','Mediaș','Cisnădie'],'Suceava':['Suceava','Fălticeni','Rădăuți'],'Teleorman':['Alexandria','Roșiorii de Vede'],'Timiș':['Timișoara','Lugoj'],'Tulcea':['Tulcea'],'Vaslui':['Vaslui','Bârlad'],'Vâlcea':['Râmnicu Vâlcea','Drăgășani'],'Vrancea':['Focșani','Adjud'],'București':['Sector 1','Sector 2','Sector 3','Sector 4','Sector 5','Sector 6']};
+var TIPS=[{id:'stoma',l:'Stomatologie',i:'🦷'},{id:'oftalmo',l:'Oftalmologie',i:'👁️'},{id:'derm',l:'Dermatologie & Estetică',i:'✨'},{id:'orto',l:'Ortopedie & Recuperare',i:'🦴'},{id:'gineco',l:'Ginecologie & Obstetrică',i:'🌸'},{id:'pediatrie',l:'Pediatrie',i:'👶'},{id:'intern',l:'Medicină Internă & Generală',i:'🩺'},{id:'multi',l:'Clinică Multidisciplinară',i:'🏥'},{id:'beauty',l:'Beauty & Wellness',i:'💆'},{id:'other',l:'Altă specialitate',i:'⚕️'}];
+var CABDEST=['Consultații','Intervenții chirurgicale','Investigații & Imagistică','Estetică','Recuperare medicală','Stomatologie','Oftalmologie','Ginecologie','Pediatrie','Alt tip'];
+
+var CORE=[
+  {id:'receptie',label:'Recepție & Primul Contact',color:'var(--blue)',bg:'var(--blue-light)',questions:[
+    {q:'Recepția ta contactează proactiv pacienții — sau doar răspunde când este sunată?',hint:'O recepție reactivă pierde zilnic zeci de oportunități. Diferența dintre a răspunde și a iniția este diferența dintre o clinică mediocră și una performantă.',opts:['Răspunde la apeluri și atât','Uneori inițiază, fără sistem clar','Protocol proactiv: recall, confirmare, follow-up — toate sistematizate']},
+    {q:'Știi câți pacienți care au sunat săptămâna trecută nu au ajuns la o programare?',hint:'Dacă nu știi acest număr, recepția ta nu măsoară conversia. Ce nu se măsoară nu se îmbunătățește.',opts:['Nu urmărim asta','Urmărim uneori, nestructurat','Tracking clar al conversiei apeluri→programări']},
+    {q:'Recepția știe să răspundă la întrebarea de preț fără să închidă conversația?',hint:'Răspunsul greșit la "cât costă?" pierde programarea pe loc — cel mai frecvent moment de pierdere a unui pacient nou.',opts:['Dă prețul și gata','Încearcă să explice, fără script','Script testat care transformă întrebarea de preț într-o programare']},
+    {q:'Câți pacienți au plecat luna trecută fără o programare următoare stabilită?',hint:'Fiecare pacient care pleacă fără programare devine un pacient de recâștigat — de 5x mai costisitor decât unul reținut.',opts:['Nu știm — nu există un proces','Mulți, dar fără soluție sistemică','Foarte puțini — protocol clar de programare la fiecare ieșire']},
+    {q:'Există un sistem activ de recall pentru pacienții care nu au revenit de 3-6 luni?',hint:'Pacienții care nu revin nu sunt pierduți — sunt uitați. Și ei au nevoie de serviciile tale.',opts:['Nu facem recall','Ocazional, fără sistem definit','Calendar de recall lunar, cu script și rezultate măsurate']}
+  ]},
+  {id:'ghid',label:'Ghidul Pacientului & Planul',color:'var(--green)',bg:'var(--green-light)',questions:[
+    {q:'Clinica ta are un rol dedicat care însoțește pacientul de la consultație până la finalizarea tratamentului?',hint:'Medicul vindecă. Ghidul Pacientului se asigură că pacientul înțelege, acceptă și revine. Fără acest rol, conversia suferă indiferent de calitatea actului medical.',opts:['Nu avem un astfel de rol','Cineva o face informal','Ghid al Pacientului cu rol, protocol și responsabilitate clară']},
+    {q:'Când un pacient spune "mă mai gândesc", există un protocol pentru minutele care urmează?',hint:'"Mă gândesc" este aproape întotdeauna o obiecție financiară sau de frică neexprimată. Netratată, devine o pierdere definitivă.',opts:['Îi dăm voie să plece','Se încearcă ceva, fără metodă','Protocol specific pentru identificarea și adresarea obiecției reale']},
+    {q:'Planul de tratament este prezentat întotdeauna în două variante — ideal și funcțional?',hint:'Un pacient căruia i se prezintă doar planul ideal și nu îl poate acoperi financiar va alege să nu facă nimic.',opts:['Prezentăm doar planul ideal','Uneori discutăm alternative, nestructurat','Plan ideal + plan funcțional cu etape clare, la fiecare consultație']},
+    {q:'Există un protocol de urmărire după fiecare intervenție — pacientul este contactat și reconfortat?',hint:'Un apel de 3 minute după o intervenție transformă un pacient anxios în unul loial și care recomandă.',opts:['Nu există acest proces','Uneori, la intervenții mari','Protocol post-intervenție standardizat, aplicat la toate cazurile']},
+    {q:'Există un manager medical care verifică planurile de tratament înainte de prezentarea către pacient?',hint:'Un plan incomplet prezentat pacientului afectează credibilitatea clinicii și conversia.',opts:['Nu — medicul face și verifică singur','Verificare informală, inconsistentă','Protocol de verificare sistematică înainte de fiecare prezentare']}
+  ]},
+  {id:'experienta',label:'Experiența Pacientului',color:'var(--purple)',bg:'var(--purple-light)',questions:[
+    {q:'Experiența unui pacient nou este identică indiferent de cine este de serviciu?',hint:'Dacă experiența depinde de persoană și nu de sistem, nu ai un standard — ai noroc. Și norocul nu se scalează.',opts:['Variază semnificativ în funcție de persoană','Relativ constantă, dar nestandardizată','Standard documentat, predat și verificat activ']},
+    {q:'Pacienții mulțumiți sunt ghidați activ să lase o recenzie și să recomande clinica?',hint:'Un pacient fericit nu recomandă automat. Trebuie să i se ceară, în momentul potrivit.',opts:['Nu — așteptăm să facă spontan','Uneori le cerem, fără proces clar','Moment definit în journey și protocol de solicitare recenzii și referale']},
+    {q:'Știi câți pacienți noi au venit luna trecută recomandați de un pacient existent?',hint:'Referalul este cel mai calificat și mai ieftin canal de achiziție. Dacă nu îl urmărești, nu îl gestionezi.',opts:['Nu urmărim sursele','Știm aproximativ, fără date clare','Urmărim sursa fiecărui pacient nou, cu acțiuni pentru stimularea referalelor']},
+    {q:'Clinica ta are un protocol de fotografiere a cazurilor de succes cu acordul pacienților?',hint:'Cazurile de succes documentate sunt cel mai puternic instrument de marketing medical.',opts:['Nu fotografiem sistematic','Fotografiem uneori, fără protocol','Protocol de fotografiere, spațiu dedicat și acord integrat în journey']},
+    {q:'Pacientul are acces la un sumar al consultațiilor, intervențiilor și planului său?',hint:'Transparența construiește încredere. Un pacient care "vede" ce primește simte că plătește pentru valoare.',opts:['Nu există această posibilitate','Trimitem documente la cerere','Pacientul are acces la istoricul său, oricând']}
+  ]},
+  {id:'financiar',label:'Operațional & Financiar',color:'var(--blue)',bg:'var(--blue-light)',questions:[
+    {q:'Știi cu exactitate care este punctul tău de breakeven lunar?',hint:'Fără breakeven calculat, nu știi dacă luna este bună sau proastă. Știi doar dacă ai bani în cont.',opts:['Nu am calculat niciodată','Am o estimare vagă','Știu exact: tip programări, valoare medie și număr necesar lunar']},
+    {q:'Urmărești săptămânal numărul de programări față de target și iei acțiuni când ești sub?',hint:'O săptămână sub target netratată devine o lună pierdută. O lună pierdută afectează cashflow-ul 60 de zile.',opts:['Nu urmărim în timp real','Verificăm la final de lună','Dashboard săptămânal cu acțiuni predefinite la orice deviație']},
+    {q:'Ai un plan proactiv pregătit pentru lunile cu cerere scăzută?',hint:'Sezonalitatea este previzibilă. Dacă nu ai un plan pregătit cu 2 luni înainte, improvizezi sub presiune.',opts:['Nu — reacționăm când apare problema','Facem acțiuni punctuale, fără strategie','Plan pregătit în avans cu campanii și acțiuni specifice per perioadă']},
+    {q:'Comisioanele echipei sunt legate de obiective de performanță clare și măsurabile?',hint:'Un salariu fix fără legătură cu performanța nu stimulează pe nimeni să facă mai mult decât minimul.',opts:['Salarii fixe, fără comisioane','Comisioane există, dar pe obiective vagi','Grilă de comisionare legată de KPI-uri specifice, revizuită regulat']},
+    {q:'Știi imediat când un furnizor și-a modificat prețurile și cum afectează asta marja ta?',hint:'Furnizorii modifică prețurile frecvent și fără anunț. Fără sistem, marja ta scade fără să știi.',opts:['Aflăm târziu sau întâmplător','Verificăm periodic, fără sistem clar','Tabel de monitorizare a costurilor cu alertă la orice modificare']}
+  ]},
+  {id:'echipa',label:'Echipă & Management',color:'var(--green)',bg:'var(--green-light)',questions:[
+    {q:'Fiecare membru al echipei știe ce înseamnă "performanță bună" în rolul său — cu un număr concret?',hint:'Fără un target numeric clar, toată lumea crede că face treabă bună. Și toată lumea are dreptate — în propriul cap.',opts:['Nu — se ghidează după bunul simț','Avem așteptări, dar neformalizate numeric','Fiecare rol are KPI-uri specifice, comunicate și urmărite constant']},
+    {q:'Ai ședințe structurate în care se discută cifre reale, nu doar operațional?',hint:'O ședință fără KPI-uri nu este management — este un briefing de activitate.',opts:['Nu avem ședințe regulate','Avem ședințe, dar fără cifre','Ședințe săptămânale cu cifre, obiective, acțiuni și responsabili']},
+    {q:'Când un om cheie lipsește, clinica ta funcționează la același standard?',hint:'Dacă un singur om lipsește și lucruri importante se blochează, ai oameni — nu un sistem.',opts:['Se blochează lucruri importante','Se adaptează, dar cu dificultate','Procese documentate, oameni care se acoperă reciproc, standard menținut']},
+    {q:'Medicii din clinica ta au contracte care protejează portofoliul de pacienți al clinicii?',hint:'Un medic fără clauze contractuale clare poate muta pacienți la altă clinică. S-a mai întâmplat.',opts:['Nu — contractele nu acoperă asta','Avem contracte, dar fără clauze clare','Contracte cu clauze specifice de protecție a portofoliului de pacienți']},
+    {q:'Dacă ai pleca 2 săptămâni fără telefon, clinica ar funcționa la același standard?',hint:'Dacă răspunsul este nu — tu ești sistemul. Și asta este cel mai mare risc pe care îl poți avea.',opts:['Ar fi probleme serioase fără mine','S-ar descurca, dar cu dificultăți','Oameni și sisteme care funcționează independent de prezența mea']}
+  ]}
+];
+
+var DEXTRA={
+  stoma:{id:'stoma',label:'Specific Stomatologie',color:'var(--blue)',bg:'var(--blue-light)',questions:[{q:'Fiecare pacient care vine pentru o urgență este evaluat și pentru alte nevoi stomatologice?',hint:'Pacientul cu urgența este cel mai receptiv la o evaluare completă — vine deja. Oportunitate ratată fără un protocol.',opts:['Nu — tratăm ce vine','Uneori, dacă medicul observă','Protocol de evaluare completă la fiecare vizită']},{q:'Urmărești rata de acceptare a planurilor de tratament per medic?',hint:'Dacă nu știi rata de acceptare per medic, nu știi unde este problema.',opts:['Nu monitorizăm asta','Avem o idee generală','Rata de acceptare per medic, urmărită lunar, cu discuții individuale']},{q:'Clinica oferă opțiuni de finanțare pentru planurile de valoare mare?',hint:'Un plan de 5.000 EUR refuzat din motive financiare este un venit pierdut care putea fi salvat.',opts:['Nu oferim finanțare','Discutăm informal','Parteneriat cu instituție financiară, prezentat standard la fiecare plan mare']}]},
+  oftalmo:{id:'oftalmo',label:'Specific Oftalmologie',color:'var(--purple)',bg:'var(--purple-light)',questions:[{q:'Medicii tăi îndrumă intern pacienții spre alte specialități disponibile în clinică?',hint:'Pacientul oftalmologic care menționează alte simptome reprezintă o oportunitate de cross-referral intern.',opts:['Nu există protocol','Se face informal','Protocol formal de pre-calificare și trimitere, programare din cabinet']},{q:'Aparatura de investigații este utilizată la capacitate optimă?',hint:'Echipamentul cu cost fix mare trebuie utilizat eficient. Intervalele libere reprezintă cost fără venit.',opts:['Nu monitorizăm','Avem o idee, fără date','Urmărim utilizarea per echipament cu acțiuni pentru completarea golurilor']},{q:'Există follow-up structurat pentru pacienții post-intervenție chirurgicală?',hint:'Follow-up-ul post-operator este o oportunitate de retenție, recenzie și referire.',opts:['Follow-up la cerere','Programăm un control, fără mai mult','Protocol: apel în 24h, control programat, solicitare recenzie']}]},
+  derm:{id:'derm',label:'Specific Dermatologie & Estetică',color:'var(--purple)',bg:'var(--purple-light)',questions:[{q:'Prezinți pachete și programe de tratament — nu doar proceduri individuale?',hint:'Un program de 6 ședințe cu rezultate garantate are valoare percepută incomparabil mai mare.',opts:['Vindem proceduri individuale','Menționăm pachete, fără protocol','Pachete structurate cu prezentare standard și protocol de follow-up']},{q:'Pacienții sunt fotografiați sistematic înainte și după fiecare tratament estetic?',hint:'Rezultatele vizuale sunt cel mai puternic instrument de marketing în estetică.',opts:['Nu fotografiem sistematic','Fotografiem uneori, fără protocol','Fotografiere standardizată, spațiu dedicat, acord semnat']},{q:'Echipa propune activ servicii complementare la fiecare vizită?',hint:'Pacientul care vine pentru un tratament poate beneficia de alte servicii — dacă i se propune cu empatie.',opts:['Nu facem asta','Se face uneori, fără sistem','Protocol de propunere a serviciilor complementare, integrat în fiecare vizită']}]},
+  orto:{id:'orto',label:'Specific Ortopedie & Recuperare',color:'var(--green)',bg:'var(--green-light)',questions:[{q:'Pacienții de recuperare revin la toate ședințele planificate sau există abandon?',hint:'Abandonul la mijlocul unui program înseamnă rezultate slabe pentru pacient și venit pierdut pentru clinică.',opts:['Abandonul este frecvent, fără soluții','Urmărim, dar fără acțiuni sistemice','Protocol de monitorizare și intervenție la primele semne de abandon']},{q:'Medicii ortopezi îndrumă intern pacienții care ar beneficia de alte specialități?',hint:'Pacientul cu dureri articulare poate beneficia de reumatologie, nutriție sau alte specialități disponibile.',opts:['Nu există protocol','Se face informal','Protocol de pre-calificare și trimitere internă cu programare din cabinet']},{q:'Există pachete combinate consultație + investigații + recuperare prezentate ca soluție completă?',hint:'Pacientul cu o problemă ortopedică vrea o soluție, nu o consultație izolată.',opts:['Nu oferim pachete combinate','Avem informal, fără structură','Pachete definite, prețuite și prezentate standard la consultație']}]},
+  gineco:{id:'gineco',label:'Specific Ginecologie & Obstetrică',color:'var(--purple)',bg:'var(--purple-light)',questions:[{q:'Pacientele care finalizează sarcina sunt reconvertite activ în paciente de ginecologie generală?',hint:'O pacientă care a născut în clinica ta are deja încredere maximă. Pierderea ei post-obstetrică este o eroare de retenție.',opts:['Nu există protocol de reconversie','Se încearcă, fără sistem clar','Protocol de tranziție cu programare automată la 6 săptămâni post-naștere']},{q:'Există un program de monitorizare preventivă anuală oferit activ pacientelor existente?',hint:'Medicina preventivă generează programări constante indiferent de sezon.',opts:['Nu oferim programe preventive','Menționăm la consultație, fără sistem','Program de monitorizare anuală cu recall automat integrat']},{q:'Clinica ta are protocoale clare pentru situații urgente comunicate activ pacientelor?',hint:'Disponibilitatea în urgențe construiește o loialitate pe care nicio campanie nu o poate cumpăra.',opts:['Nu avem protocol clar comunicat','Există intern, dar nu comunicat activ','Protocol de urgențe definit și comunicat la fiecare consultație']}]},
+  pediatrie:{id:'pediatrie',label:'Specific Pediatrie',color:'var(--green)',bg:'var(--green-light)',questions:[{q:'Clinica ta este prietenoasă pentru copii — spațiu, comunicare cu părinții, atitudinea echipei?',hint:'Părintele anxios aduce copilul acolo unde se simte bine primit și înțeles.',opts:['Nu am adaptat specific pentru copii','Parțial — câteva elemente, nesistematic','Spațiu dedicat, materiale pentru copii, training echipă']},{q:'Există un protocol de comunicare cu părinții care îi ține informați pe tot parcursul?',hint:'Părintele care nu știe ce se întâmplă devine anxios. Comunicarea constantă este esențială.',opts:['Comunicăm la cerere','Medicul explică la final','Protocol de informare continuă a părintelui cu explicații clare']},{q:'Urmărești imunizările și controalele de rutină și faci recall proactiv?',hint:'Controalele periodice sunt programări predictibile. Un sistem de recall proactiv transformă aceste momente în revenue constant.',opts:['Nu urmărim calendar de controale','Reamintim la cerere','Sistem de urmărire per pacient cu recall proactiv la fiecare etapă']}]},
+  intern:{id:'intern',label:'Specific Medicină Internă & Generală',color:'var(--blue)',bg:'var(--blue-light)',questions:[{q:'Medicii de medicină generală fac trimiteri interne spre alte specialități disponibile?',hint:'Medicul generalist este cel mai bun sursă de cross-referral — vede cel mai larg spectru de nevoi.',opts:['Nu există protocol de trimitere internă','Se face informal','Protocol de pre-calificare și trimitere internă cu programare din cabinet']},{q:'Pacienții cu boli cronice au un program de monitorizare și sunt contactați proactiv?',hint:'Pacientul cronic este cel mai valoros pe termen lung — dacă este îngrijit corect.',opts:['Nu există sistem de monitorizare cronică','Pacientul vine când simte nevoia','Program de monitorizare cu recall periodic și follow-up activ']},{q:'Clinica oferă pachete de analize preventive anuale, prezentate proactiv?',hint:'Medicina preventivă generează programări constante și revenue predictibil.',opts:['Nu oferim pachete preventive','Menționăm la consultație, fără sistem','Pachete definite cu recall anual integrat']}]},
+  multi:{id:'multi',label:'Specific Clinică Multidisciplinară',color:'var(--purple)',bg:'var(--purple-light)',questions:[{q:'Există un sistem formal de cross-referral intern — medicii se îndrumă reciproc cu un protocol clar?',hint:'Valoarea principală a clinicii multidisciplinare este că pacientul nu trebuie să plece pentru altă specialitate. Dacă cross-referral-ul nu se întâmplă sistematic, pierzi tocmai avantajul tău competitiv.',opts:['Nu există protocol formal','Se face informal, depinde de relația dintre medici','Protocol formal, programare din cabinet, urmărire lunară']},{q:'Fiecare medic este instruit să facă o scurtă pre-calificare pentru alte specialități ale clinicii?',hint:'Medicul oftalmolog care aude că pacientul are dureri de genunchi are 60 de secunde să facă diferența.',opts:['Nu există training pentru cross-referral','Unii fac din inițiativă proprie','Toți medicii au training de pre-calificare inter-specialitate']},{q:'Există un raport lunar al trimiterilor interne cu volume, surse și rate de conversie?',hint:'Ce nu se măsoară nu se gestionează. Trimiterile interne nemăsurate sunt oportunitate invizibilă.',opts:['Nu urmărim cross-referral-ul intern','Avem imagine generală, fără date','Raport lunar cu volum, sursă, destinație și rata de conversie']}]},
+  beauty:{id:'beauty',label:'Specific Beauty & Wellness',color:'var(--purple)',bg:'var(--purple-light)',questions:[{q:'Clienții tăi sunt înscriși într-un program de loialitate sau abonament care îi aduce regulat?',hint:'Un client fără abonament vine când își amintește. Unul cu abonament vine când are nevoie.',opts:['Nu avem un astfel de program','Avem ceva, dar nestructurat','Program de loialitate sau abonament definit, cu beneficii clare']},{q:'Echipa propune activ servicii complementare la fiecare vizită — natural, nu insistent?',hint:'Clientul care vine pentru un masaj și pleacă fără să afle de alte servicii este incomplet servit.',opts:['Nu facem upsell','Uneori, depinde de persoană','Protocol de propunere a serviciilor complementare, integrat în fiecare vizită']},{q:'Clienții tăi sunt ghidați activ să te recomande prietenilor — cu un sistem de referral clar?',hint:'În beauty & wellness, referalul este cel mai puternic canal.',opts:['Nu avem sistem de referral','Recomandă spontan, fără stimulare','Sistem de referral cu beneficii pentru ambele părți, comunicat activ']}]},
+  other:{id:'other',label:'Specific Specialității Tale',color:'var(--blue)',bg:'var(--blue-light)',questions:[{q:'Pacienții tăi sunt evaluați și pentru nevoi din alte specialități disponibile în clinică?',hint:'Orice medic poate fi un punct de captare pentru restul clinicii cu un protocol simplu de 60 de secunde.',opts:['Nu există protocol','Se face informal','Protocol de pre-calificare și îndrumare internă cu programare din cabinet']},{q:'Există un program de mentenanță sau monitorizare pentru pacienții cu nevoi recurente?',hint:'Pacienții cu nevoi periodice sunt sursa cea mai predictibilă de revenue. Fără recall, se pierd constant.',opts:['Nu avem program de monitorizare','Pacienții revin când simt nevoia','Program cu calendar clar și recall proactiv integrat']},{q:'Performanța medicilor este discutată individual, cu date concrete, regulat?',hint:'Fără feedback bazat pe date, un medic nu știe unde poate face mai mult.',opts:['Nu avem discuții de performanță individuale','Discutăm general, fără date','Evaluări individuale lunare cu date clare, obiective și plan de dezvoltare']}]}
+};
+
+// DIAGNOSTIC STATE
+var DS={phase:'context',ctx:{tip:null,judet:null,oras:null,cab:[]},si:0,ans:{},sections:[]};
+function buildSections(){DS.sections=CORE.slice();var ex=DEXTRA[DS.ctx.tip||'other'];if(ex)DS.sections.push(ex);}
+function totalQ(){return DS.sections.reduce(function(a,s){return a+s.questions.length;},0);}
+function answeredN(){var n=0;for(var k in DS.ans){if(DS.ans[k]!==null)n++;}return n;}
+function getA(si,qi){var v=DS.ans[si+'-'+qi];return v===undefined?null:v;}
+function setA(si,qi,v){DS.ans[si+'-'+qi]=v;renderDiag();}
+function secDone(si){return DS.sections[si].questions.every(function(_,i){return getA(si,i)!==null;});}
+function secScore(si){var s=DS.sections[si],t=0,m=s.questions.length*2;s.questions.forEach(function(_,qi){var v=getA(si,qi);if(v!==null)t+=Number(v);});return Math.round((t/m)*100);}
+function totScore(){var t=0,m=totalQ()*2;DS.sections.forEach(function(s,si){s.questions.forEach(function(_,qi){var v=getA(si,qi);if(v!==null)t+=Number(v);});});return Math.round((t/m)*100);}
+function riskLevel(p){return p<35?'critical':p<60?'moderate':p<80?'good':'excellent';}
+
+function openDiag(){DS={phase:'context',ctx:{tip:null,judet:null,oras:null,cab:[]},si:0,ans:{},sections:[]};document.getElementById('diagModal').classList.add('active');document.body.style.overflow='hidden';renderDiag();}
+function closeDiag(){document.getElementById('diagModal').classList.remove('active');document.body.style.overflow='';}
+
+function diagHdr(){
+  return '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'
+    +'<div style="display:flex;align-items:center;gap:7px"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M6 9l2 2 4-4"/></svg></div>'
+    +'<span style="font-family:\'Playfair Display\',serif;font-size:15px;font-weight:500;color:var(--slate)">Clarity <span style="color:var(--blue)">Medical</span></span></div>'
+    +'<button onclick="closeDiag()" style="background:var(--cream);border:none;width:26px;height:26px;border-radius:50%;font-size:12px;cursor:pointer;color:var(--text-mid);display:flex;align-items:center;justify-content:center">✕</button></div>';
+}
+
+function renderDiag(){
+  if(DS.phase==='context')renderCtx();
+  else if(DS.phase==='questions')renderQ();
+  else if(DS.phase==='capture')renderCap();
+  else renderRes();
+}
+
+function renderCtx(){
+  var el=document.getElementById('diagInner');
+  var ctx=DS.ctx;
+  var jOpts='<option value="">Selectează județul</option>';
+  Object.keys(JUDETE).sort().forEach(function(j){jOpts+='<option value="'+j+'" '+(ctx.judet===j?'selected':'')+'>'+j+'</option>';});
+  var oOpts='<option value="">Selectează orașul</option>';
+  if(ctx.judet&&JUDETE[ctx.judet])JUDETE[ctx.judet].forEach(function(o){oOpts+='<option value="'+o+'" '+(ctx.oras===o?'selected':'')+'>'+o+'</option>';});
+  var tipH='<div class="tip-grid">';
+  TIPS.forEach(function(t){var s=ctx.tip===t.id;tipH+='<div class="tip-item'+(s?' sel':'')+'" onclick="selTip(\''+t.id+'\')"><span style="font-size:15px">'+t.i+'</span><span>'+t.l+'</span></div>';});
+  tipH+='</div>';
+  var cabH=ctx.cab.length===0?'<p style="font-size:13px;color:var(--text-light);font-style:italic">Adaugă cel puțin un cabinet.</p>':ctx.cab.map(function(c,i){var dO='<option value="">Destinația cabinetului</option>';CABDEST.forEach(function(d){dO+='<option value="'+d+'" '+(c.dest===d?'selected':'')+'>'+d+'</option>';});return'<div class="cab-row"><input class="fld" placeholder="Nr/Denumire" value="'+(c.nr||'')+'" oninput="updCab('+i+',\'nr\',this.value)" style="margin-bottom:0"><select class="fld" style="margin-bottom:0" onchange="updCab('+i+',\'dest\',this.value)">'+dO+'</select></div>';}).join('');
+  var ok=ctx.tip&&ctx.judet&&ctx.oras&&ctx.cab.length>0&&ctx.cab.every(function(c){return c.dest;});
+  el.innerHTML=diagHdr()+'<div class="modal" style="padding:28px"><div class="mlabel">Pas 1 · Despre clinica ta</div><h2 class="mtitle">Spune-ne despre clinica ta</h2><p class="msub">Aceste informații personalizează diagnosticul pentru tipologia și contextul tău specific.</p>'
+    +'<div class="fld-wrap"><label class="fld-label">Tipologia clinicii *</label>'+tipH+'</div>'
+    +'<div class="ctx-grid"><div class="fld-wrap"><label class="fld-label">Județul *</label><select class="fld" onchange="selJudet(this.value)">'+jOpts+'</select></div>'
+    +'<div class="fld-wrap"><label class="fld-label">Orașul *</label><select class="fld" '+(ctx.judet?'':'disabled')+' onchange="selOras(this.value)">'+oOpts+'</select></div></div>'
+    +'<div class="fld-wrap"><label class="fld-label">Cabinetele clinicii *</label>'+cabH+'<button class="add-cab" onclick="addCab()">+ Adaugă cabinet</button></div>'
+    +'<div class="dnav"><button class="btn-bk" onclick="closeDiag()">Anulează</button><button class="btn-nx"'+(ok?'':' disabled')+' onclick="startQ()">Continuă →</button></div></div>';
+}
+function selTip(id){DS.ctx.tip=id;renderCtx();}
+function selJudet(v){DS.ctx.judet=v;DS.ctx.oras=null;renderCtx();}
+function selOras(v){DS.ctx.oras=v;renderCtx();}
+function addCab(){DS.ctx.cab.push({nr:'',dest:''});renderCtx();}
+function updCab(i,f,v){DS.ctx.cab[i][f]=v;renderCtx();}
+function startQ(){buildSections();DS.phase='questions';DS.si=0;renderDiag();}
+
+function renderQ(){
+  var el=document.getElementById('diagInner');
+  var s=DS.sections[DS.si],N=DS.sections.length,isLast=DS.si===N-1,done=secDone(DS.si);
+  var ans=answeredN(),tq=totalQ(),pct=Math.round((ans/tq)*100);
+  var h=diagHdr()+'<div class="prog"><div class="prog-meta"><span>'+ans+' din '+tq+' · Secțiunea '+(DS.si+1)+' din '+N+'</span><span>'+pct+'%</span></div><div class="prog-track"><div class="prog-fill" style="width:'+pct+'%"></div></div></div>';
+  h+='<div class="modal" style="padding:26px"><div class="secbadge" style="background:'+s.bg+';color:'+s.color+'">'+s.label+'</div>';
+  s.questions.forEach(function(q,qi){
+    var a=getA(DS.si,qi);
+    h+='<div class="qblock"><div class="qtext">'+q.q+'</div><div class="qhint">'+q.hint+'</div><div class="opts">';
+    q.opts.forEach(function(opt,vi){var sel=a===vi;h+='<div class="opt'+(sel?' sel':'')+'" onclick="setA('+DS.si+','+qi+','+vi+')"><div class="oradio"><div class="odot"></div></div><span class="otxt">'+opt+'</span></div>';});
+    h+='</div></div>';
+  });
+  h+='<div class="dnav"><button class="btn-bk" onclick="'+(DS.si>0?'DS.si--;renderDiag()':'DS.phase=\'context\';renderDiag()')+'">'+( DS.si>0?'← Înapoi':'← Context')+'</button><button class="btn-nx"'+(done?'':' disabled')+' onclick="'+(isLast?'DS.phase=\'capture\';renderDiag()':'DS.si++;renderDiag()')+'">'+( isLast?'Vezi raportul →':'Continuă →')+'</button></div></div>';
+  el.innerHTML=h;
+}
+
+function renderCap(){
+  var tip=TIPS.find(function(t){return t.id===DS.ctx.tip;})||{l:'clinica ta'};
+  document.getElementById('diagInner').innerHTML=diagHdr()
+    +'<div class="modal" style="text-align:center">'
+    +'<div class="capicon">📬</div>'
+    +'<div class="mlabel">Diagnostic finalizat</div>'
+    +'<h2 class="mtitle">Unde îți trimitem raportul?</h2>'
+    +'<p class="msub">Personalizat pentru '+tip.l+' din '+(DS.ctx.oras||'')+'. Primești indicatori de risc, scoruri și recomandări concrete.</p>'
+    +'<input class="ef" id="capE" type="email" placeholder="Emailul tău profesional">'
+    +'<input class="ef" id="capN" type="text" placeholder="Prenumele tău">'
+    +'<div id="capStatus"></div>'
+    +'<button class="btn-cap" id="capBtn" onclick="subCap()">Trimite-mi raportul →</button>'
+    +'<p style="font-size:12px;color:var(--text-light);margin-top:10px">Fără spam. Raportul și, opțional, o invitație la 30 min cu noi.</p>'
+    +'</div>';
+}
+
+async function subCap(){
+  var e=document.getElementById('capE').value.trim();
+  var n=document.getElementById('capN').value.trim();
+  if(!e||!n){alert('Te rog completează prenumele și emailul.');return;}
+
+  var btn=document.getElementById('capBtn');
+  var status=document.getElementById('capStatus');
+  btn.disabled=true;
+  btn.textContent='Se generează raportul...';
+  status.innerHTML='<p style="font-size:13px;color:var(--blue);margin-bottom:10px">⏳ Analizăm răspunsurile tale...</p>';
+
+  // Build score summary for API
+  buildSections();
+  var sc=totScore();
+  var summary=DS.sections.map(function(s,si){return s.label+': '+secScore(si)+'%';}).join(', ');
+  var tip=TIPS.find(function(t){return t.id===DS.ctx.tip;})||{l:'clinica'};
+  var ctx=DS.ctx;
+
+  var prompt='Ești consultant medical senior la Clarity Medical. Generează un raport de diagnostic personalizat în limba română pentru:\n'
+    +'- Prenume: '+n+'\n'
+    +'- Email: '+e+'\n'
+    +'- Tipologie clinică: '+tip.l+'\n'
+    +'- Locație: '+ctx.oras+(ctx.judet?', '+ctx.judet:'')+'\n'
+    +'- Cabinete: '+ctx.cab.map(function(c){return c.dest;}).join(', ')+'\n'
+    +'- Scoruri per zonă: '+summary+'\n'
+    +'- Scor general: '+sc+'%\n\n'
+    +'Scrie un raport cald, profesionist și acționabil cu:\n'
+    +'1. Salut personalizat cu prenumele\n'
+    +'2. Rezumat scor general (1-2 fraze)\n'
+    +'3. Top 2 zone critice cu recomandare concretă pentru fiecare\n'
+    +'4. Un punct pozitiv dacă există (scor >70%)\n'
+    +'5. Invitație caldă la o discuție de 30 minute\n'
+    +'Ton: partener de încredere, nu auditor. Maximum 300 cuvinte.';
+
+  try {
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    var data=await resp.json();
+    var text=data.content&&data.content[0]&&data.content[0].text?data.content[0].text:'';
+
+    if(text){
+      // Show report on screen
+      DS.emailReport=text;
+      DS.emailName=n;
+      DS.emailAddr=e;
+      DS.phase='result';
+      renderDiag();
+    } else {
+      throw new Error('no content');
+    }
+  } catch(err){
+    // Fallback — go to result anyway
+    DS.phase='result';
+    renderDiag();
+  }
+}
+
+var RWHY={
+  critical:{receptie:'Recepția ta pierde pacienți zilnic — apeluri care nu devin programări, pacienți care pleacă fără programare, recall absent. Revenue direct pierdut, greu de recuperat.',ghid:'Pacienții tăi nu au un însoțitor dedicat. Obiecțiile rămân neadresate, planurile sunt greu de acceptat, conversia suferă indiferent de calitatea actului medical.',experienta:'Pacienții nu au o experiență consistentă și nu sunt ghidați să recomande. Cel mai puternic canal de achiziție — referalul — este nevalorificat.',financiar:'Clinica funcționează fără instrumente financiare clare. Nu știi cu certitudine dacă ești profitabil și nu ai planuri pentru perioadele de scădere inevitabile.',echipa:'Echipa funcționează fără obiective clare și fără standarde documentate. Risc operațional ridicat, dependență excesivă de persoane cheie.'},
+  moderate:{receptie:'Există un început de sistem, dar inconsistent. Pacienți se pierd prin fisuri — confirmări lipsă, recall absent, conversii nemăsurate.',ghid:'Există ceva, dar fără protocol clar. Obiecțiile sunt gestionate variabil, follow-up-ul depinde de bunăvoința fiecăruia.',experienta:'Experiența există, dar depinde prea mult de oameni. Când cineva are o zi dificilă, pacientul simte.',financiar:'Ai o imagine despre cifre, dar nu suficient de clară pentru decizii corecte la timp. Reacționezi mai mult decât anticipezi.',echipa:'Echipa funcționează, dar fără o direcție suficient de clară. Performanța variază și standardele sunt nerostite.'},
+  good:{receptie:'Recepția ta funcționează bine. Rafinează scripturile și urmărește rata de conversie — acolo este profitul ascuns.',ghid:'Ghidul Pacientului este pregătit. Zona de rafinat: protocoalele post-intervenție și gestiunea obiecțiilor ascunse.',experienta:'Pacienții tăi au o experiență bună. Pasul următor: sistematizarea referalelor și documentarea cazurilor de succes.',financiar:'Ai claritate financiară bună. Pasul următor: automatizarea monitorizării și planuri sezoniere detaliate.',echipa:'Echipa ta are direcție și standarde. Construiește redundanță — sisteme care funcționează independent de persoanele cheie.'},
+  excellent:{receptie:'Recepția ta este un asset real. Menține standardele și documentează tot ce funcționează pentru onboarding viitor.',ghid:'Ghidul Pacientului funcționează la nivel înalt. Documentează procesele — esențiale la scalare.',experienta:'Experiența pacienților tăi este un avantaj competitiv clar. Capitalizează prin programe structurate de referale.',financiar:'Sistem financiar solid. Concentrează-te pe optimizarea mix-ului de servicii și pe scalare.',echipa:'Echipa ta este un sistem, nu o colecție de oameni. Protejează această cultură pe măsură ce crești.'}
+};
+var RMETA={critical:{icon:'🔴',label:'Risc Critic',color:'#c0392b',bg:'#fdf0ee',border:'#f5c5be',action:'Necesită acțiune în această săptămână.'},moderate:{icon:'🟡',label:'Risc Moderat',color:'#d97706',bg:'#fef3e2',border:'#fad6a0',action:'Adresează în următoarele 30 de zile.'},good:{icon:'🟢',label:'Funcționează Bine',color:'#2d9b6f',bg:'#e6f7f1',border:'#a8e0cc',action:'Rafinează și documentează pentru consistență.'},excellent:{icon:'⭐',label:'Excelent',color:'var(--blue)',bg:'var(--blue-light)',border:'#b8d4f5',action:'Protejează și scalează — ai construit ceva valoros.'}};
+
+function renderRes(){
+  var el=document.getElementById('diagInner');
+  var sc=totScore(),tip=TIPS.find(function(t){return t.id===DS.ctx.tip;})||{l:'clinica ta',i:'🏥'};
+  var bc,bb,sm,ss;
+  if(sc<35){bc='#c0392b';bb='#fdf0ee';sm='Clinica are nevoie urgentă de sisteme';ss='Există gap-uri critice care costă bani și pacienți în fiecare zi.';}
+  else if(sc<60){bc='#d97706';bb='#fef3e2';sm='Există fundație, dar cu gap-uri semnificative';ss='Unele lucruri funcționează, altele pierd silențios revenue și pacienți.';}
+  else if(sc<80){bc='var(--blue)';bb='var(--blue-light)';sm='Bun — cu oportunități clare de creștere';ss='Clinica ta merge bine, dar sunt zone unde poți recupera mult.';}
+  else{bc='var(--green)';bb='var(--green-light)';sm='Clinica funcționează la nivel ridicat';ss='Ești în top. Focusul acum este pe scalare și protejarea a ce ai construit.';}
+  var groups={critical:[],moderate:[],good:[],excellent:[]};
+  DS.sections.forEach(function(s,si){var p=secScore(si);groups[riskLevel(p)].push({s:s,si:si,p:p});});
+  var h=diagHdr()+'<div class="modal wide" style="padding:26px;margin-bottom:20px">';
+  h+='<div class="mlabel">Raportul tău · Clarity Medical</div><h2 class="mtitle">'+tip.i+' Diagnostic '+tip.l+'</h2>';
+  h+='<p style="font-size:12px;color:var(--text-light);margin-bottom:12px">'+DS.ctx.oras+(DS.ctx.judet?', '+DS.ctx.judet:'')+' · '+DS.ctx.cab.length+' cabinet'+(DS.ctx.cab.length!==1?'e':'')+': '+DS.ctx.cab.map(function(c){return c.dest||'nedefinit';}).join(', ')+'</p>';
+  h+='<div class="rsbanner" style="background:'+bb+'"><div class="rsnum" style="color:'+bc+'">'+sc+'%</div><div class="rsmsg" style="color:'+bc+'">'+sm+'</div><div class="rssub" style="color:'+bc+'">'+ss+'</div></div>';
+  h+='<div class="bars-wrap"><div class="bars-lbl">Scor per zonă</div>';
+  DS.sections.forEach(function(s,si){var p=secScore(si),m=RMETA[riskLevel(p)];h+='<div class="brow"><div class="bmeta"><span style="font-size:12px;color:var(--text-mid);font-weight:500">'+s.label+'</span><span style="font-size:12px;font-weight:700;color:'+m.color+'">'+p+'%</span></div><div class="btrack"><div class="bfill" style="width:'+p+'%;background:'+m.color+'"></div></div></div>';});
+  h+='</div>';
+  ['critical','moderate','good','excellent'].forEach(function(level){
+    if(!groups[level].length)return;
+    var m=RMETA[level];
+    h+='<div class="risk-grp"><div class="risk-grp-lbl" style="background:'+m.bg+';color:'+m.color+'">'+m.icon+' '+m.label+'</div><div class="rcards">';
+    groups[level].forEach(function(item){
+      var why=(RWHY[level]&&RWHY[level][item.s.id])||'Analizează această zonă și identifică acțiunile prioritare.';
+      h+='<div class="rcard '+level+'"><div class="rcard-icon">'+m.icon+'</div><div class="rcard-body"><h5>'+item.s.label+' · '+item.p+'%</h5><p>'+why+'</p><p style="margin-top:4px;font-weight:700;font-size:11px">→ '+m.action+'</p></div></div>';
+    });
+    h+='</div></div>';
+  });
+  h+='<div class="rctas"><button class="btn-rp" onclick="closeDiag();openBooking()">Hai să vorbim 30 de minute →</button><button class="btn-rs" onclick="closeDiag()">Închide</button></div>';
+  if(DS.emailReport){
+    h+='<div style="margin-top:20px;padding:20px;background:var(--cream);border-radius:12px;border-left:3px solid var(--blue)">'
+      +'<p style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:10px">✉ Raport personalizat generat pentru '+DS.emailName+'</p>'
+      +'<p style="font-size:13px;color:var(--text-mid);line-height:1.7;white-space:pre-wrap">'+DS.emailReport+'</p>'
+      +'</div>';
+  }
+  h+='<p style="font-size:11px;color:var(--text-light);margin-top:10px;line-height:1.6;text-align:center">Raportul a fost trimis pe email. 30 de minute cu noi, fără obligații.</p></div>';
+  el.innerHTML=h;
+}
+
+// BOOKING
+function openBooking(){
+  document.getElementById('bookInner').innerHTML='<button onclick="closeBooking()" class="mcl">✕</button><div class="mlabel">Hai să vorbim</div><h2 class="mtitle">O discuție de 30 de minute</h2><p class="msub">Fără presiune. Vorbim despre clinica ta, ce funcționează și ce nu. Dacă simți că te putem ajuta, discutăm mai departe.</p><input class="fld" id="bkN" placeholder="Prenumele tău *"><input class="fld" id="bkE" placeholder="Email *" type="email"><input class="fld" id="bkP" placeholder="Telefon *"><input class="fld" id="bkC" placeholder="Numele clinicii"><textarea class="fld" id="bkT" style="min-height:80px;resize:vertical" placeholder="Ce te preocupă cel mai mult în clinica ta acum?"></textarea><button class="btn-p" style="width:100%;padding:13px;font-size:14px;border-radius:10px" onclick="subBook()">Trimite →</button>';
+  document.getElementById('bookModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeBooking(){document.getElementById('bookModal').classList.remove('active');document.body.style.overflow='';}
+function subBook(){var n=document.getElementById('bkN').value.trim(),e=document.getElementById('bkE').value.trim(),p=document.getElementById('bkP').value.trim();if(!n||!e||!p){alert('Te rog completează câmpurile marcate cu *.');return;}document.getElementById('bookInner').innerHTML='<button onclick="closeBooking()" class="mcl">✕</button><div class="succ"><div class="succcircle">✓</div><h3 style="font-size:22px;margin-bottom:10px;color:var(--slate)">Mesaj trimis!</h3><p style="color:var(--text-mid);font-size:15px;line-height:1.65">Vă contactăm în maxim 24h. Ne bucurăm că ne cunoaștem.</p></div>';}
+</script>
+</body>
+</html>
